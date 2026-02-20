@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Activities\Commands\" />
     <Folder Include="Activities\Queries\" />
   </ItemGroup>
 
