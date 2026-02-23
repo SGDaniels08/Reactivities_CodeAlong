@@ -1,3 +1,4 @@
+using AutoMapper;
 using Domain;
 using MediatR;
 using Persistence;
@@ -11,7 +12,7 @@ public class EditActivity
         public required Activity Activity { get; set; }
     }
 
-    public class Handler(AppDbContext context) : IRequestHandler<Command>
+    public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Command>
     {
         public async Task Handle(Command request, CancellationToken cancellationToken)
         {
@@ -19,9 +20,11 @@ public class EditActivity
                 .FindAsync([request.Activity.Id], cancellationToken)        // Makes a call to the DB, gets activity based on ID
                 ?? throw new Exception("Cannot find activity");             // If activity not found (returns null for given ID), throw exception
 
-            activity.Title = request.Activity.Title;                     // Need to assign fields from db request to variable for editing; without automapping, set each individually
+            //activity.Title = request.Activity.Title;                     // Need to assign fields from db request to variable for editing; without automapping, set each individually
         
-            await context.SaveChangesAsync(cancellationToken);
+            mapper.Map(request.Activity, activity);                         // Takes all fields from request object and maps it to db variable
+
+            await context.SaveChangesAsync(cancellationToken);              // Save the automapped changes into db
         }
     }
 }

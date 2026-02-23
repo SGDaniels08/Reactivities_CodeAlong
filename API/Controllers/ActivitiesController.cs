@@ -1,13 +1,18 @@
 using Application.Activities.Commands;
 using Application.Activities.Queries;
 using Domain;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
 public class ActivitiesController : BaseApiController
 {
+    // [HttpGet]       // Sample version using Cancellation Token (also need changes in Handler file)
+    // public async Task<ActionResult<List<Activity>>> GetActivities(CancellationToken ct)
+    // {
+    //     return await Mediator.Send(new GetActivityList.Query(), ct);
+    // }
+
     [HttpGet]
     public async Task<ActionResult<List<Activity>>> GetActivities()
     {
@@ -31,5 +36,12 @@ public class ActivitiesController : BaseApiController
     {
         await Mediator.Send(new EditActivity.Command{Activity = activity});
         return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteActivity(string id)
+    {
+        await Mediator.Send(new DeleteActivity.Command{Id = id});
+        return Ok();
     }
 }
