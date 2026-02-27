@@ -1,4 +1,3 @@
-using System;
 using Domain;
 
 namespace Persistence;
@@ -7,7 +6,7 @@ public class DbInitializer
 {
     public static async Task SeedData(AppDbContext context)
     {
-        if(context.Activities.Any()) return;
+        if(context.Activities.Any()) return;            // Place breakpoint here, run C#: API Debug 
 
         var activities = new List<Activity>
         {
