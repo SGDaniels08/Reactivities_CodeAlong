@@ -3,9 +3,10 @@ import ActivityCard from "./ActivityCard";
 
 type Props = {
     activities: Activity[]
+    selectActivity: (id: string) => void;
 }
 
-export default function ActivityList({activities}: Props) {
+export default function ActivityList({activities, selectActivity}: Props) {
   return (
 //  You can use parentheses or curly brackets in the arrow function
 //  If you use curly brackets, you must include a return statement
@@ -17,7 +18,7 @@ export default function ActivityList({activities}: Props) {
 //    </Box>
     <Box sx={{display: 'flex', flexDirection: 'column', gap: 3}}>
         {activities.map(activity =>(
-            <ActivityCard key={activity.id} activity={activity} />
+            <ActivityCard key={activity.id} activity={activity} selectActivity={selectActivity}/>
         ))}
         
     </Box>
