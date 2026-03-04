@@ -46,6 +46,21 @@ const handleFormClose = () => {
   setEditMode(false);
 }
 
+const handleSubmitForm = (activity: Activity) => {
+  if (activity.id) {
+    setActivities(activities.map(x => x.id === activity.id ? activity : x))
+  } else {
+    const newActivity = {...activity, id: activities.length.toString()}
+    setSelectedActivity(newActivity);
+    setActivities([...activities, newActivity]) // The three-dot notation put everything in the attached object into an array
+  }
+
+  setEditMode(false);
+}
+
+const handleDelete = (id: string) => {
+  setActivities(activities.filter(x => x.id !== id))
+}
 
   return (
     <Box sx={{bgcolor: '#eeeeee'}}>
@@ -60,7 +75,9 @@ const handleFormClose = () => {
           editMode={editMode}
           openForm={handleOpenForm}
           closeForm={handleFormClose}
-        />
+          submitForm={handleSubmitForm}
+          deleteActivity={handleDelete}
+/>
       </Container>
     </Box>
   )
