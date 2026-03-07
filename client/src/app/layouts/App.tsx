@@ -1,34 +1,14 @@
-//import { useEffect, useState } from "react";
 import { useState} from "react";
-import axios from "axios";
 import { CssBaseline, Container, Box, Typography } from "@mui/material";
 import NavBar from "./NavBar";
 import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
-import { useQuery } from "@tanstack/react-query";
+import { useActivities } from "../../lib/hooks/useActivities";
 
 function App() {
   // const [activities, setActivities] = useState<Activity[]>([]);    // Native react state management if not using React Query
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>(undefined);
   const [editMode, setEditMode] = useState(false);
-
-  const {data: activities, isPending} = useQuery({    // Many other states: isLoading, isError, isFetching, etc.
-    queryKey: ['activities'],
-    queryFn: async () => {
-      const response = await axios.get<Activity[]>('https://localhost:5001/api/activities');
-      return response.data;
-    }
-  })
-
-
-  // useEffect(() => {
-  //   axios.get<Activity[]>('https://localhost:5001/api/activities')
-  //     .then(response => setActivities(response.data))
-
-  //     return () => {}
-  // }, [])
-  // 
-  // useEffect() also not necessary if using React Query
-
+  const {activities, isPending} = useActivities();
 
 // Activity object needed in ActivityDashboard.tsx
 // Could move creation of "activities" bject to that file,
@@ -60,23 +40,23 @@ const handleFormClose = () => {
   setEditMode(false);
 }
 
-const handleSubmitForm = (activity: Activity) => {
-  // if (activity.id) {
-  //   setActivities(activities.map(x => x.id === activity.id ? activity : x))
-  // } else {
-  //   const newActivity = {...activity, id: activities.length.toString()}
-  //   setSelectedActivity(newActivity);
-  //   setActivities([...activities, newActivity]) // The three-dot notation put everything in the attached object into an array
-  // }
-  // Placeholder during dev
-  console.log(activity);
-  setEditMode(false);
-}
+// const handleSubmitForm = (activity: Activity) => {
+//   // if (activity.id) {
+//   //   setActivities(activities.map(x => x.id === activity.id ? activity : x))
+//   // } else {
+//   //   const newActivity = {...activity, id: activities.length.toString()}
+//   //   setSelectedActivity(newActivity);
+//   //   setActivities([...activities, newActivity]) // The three-dot notation put everything in the attached object into an array
+//   // }
+//   // Placeholder during dev
+//   console.log(activity);
+//   setEditMode(false);
+// }
 
-const handleDelete = (id: string) => {
-  //setActivities(activities.filter(x => x.id !== id))
-  console.log(id);
-}
+//const handleDelete = (id: string) => {
+//  //setActivities(activities.filter(x => x.id !== id))
+//  console.log(id);
+//}
 
   return (
     <Box sx={{bgcolor: '#eeeeee', minHeight: '100vh'}}>
@@ -94,8 +74,8 @@ const handleDelete = (id: string) => {
             editMode={editMode}
             openForm={handleOpenForm}
             closeForm={handleFormClose}
-            submitForm={handleSubmitForm}
-            deleteActivity={handleDelete}
+            //submitForm={handleSubmitForm}
+            //deleteActivity={handleDelete}
           />
         )}
 
