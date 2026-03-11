@@ -3,6 +3,7 @@ using System.Runtime.ConstrainedExecution;
 
 namespace Domain;
 
+// Each property in class will correspond to a column in a table
 public class Activity
 {
     public string Id { get; set; } = Guid.NewGuid().ToString();

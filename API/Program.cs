@@ -1,4 +1,3 @@
-using System;
 using Application.Activities.Queries;
 using Application.Core;
 using Microsoft.EntityFrameworkCore;
