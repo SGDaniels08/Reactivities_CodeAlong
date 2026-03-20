@@ -3,6 +3,7 @@ import App from "../layouts/App";
 import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
 import HomePage from "../../features/home/HomePage";
 import ActivityForm from "../../features/activities/form/ActivityForm";
+import ActivityDetail from "../../features/activities/details/ActivityDetail";
 
 // Routes are provided as an array, and each route will be a Route object
 export const router = createBrowserRouter([
@@ -12,7 +13,9 @@ export const router = createBrowserRouter([
         children: [
             { path: '', element: <HomePage /> },
             { path: 'activities', element: <ActivityDashboard />},
-            { path: 'createActivity', element: <ActivityForm />}
-        ]
-    }
+            { path: 'activities/:id', element: <ActivityDetail />},
+            { path: 'createActivity', element: <ActivityForm key='create' />},      // By giving a "key" to a component, React will be able to distinguish
+            { path: 'manage/:id', element: <ActivityForm />}                        // between different instances of same component. Here, it will ensure that
+        ]                                                                           // the <ActivityForm> for "Create Activity" will always be seen as different from
+    }                                                                               // <ActivityForm> for "Edit Activity", ensure "Create" form is blank
 ])

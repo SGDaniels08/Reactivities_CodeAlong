@@ -1,5 +1,5 @@
 import { Box, Button, Card, CardActions, CardContent, Chip, Typography } from "@mui/material"
-import { useActivities } from "../../../lib/hooks/useActivities";
+import { Link } from "react-router";
 
 type Props = {
     activity: Activity
@@ -8,8 +8,13 @@ type Props = {
 }
 
 export default function ActivityCard({activity}: Props) {
-    const {deleteActivity} = useActivities();
-    
+    // Placeholders right now, help with building out component
+    const isHost = false;
+    const isGoing = false;
+    const label = isHost ? 'You are hosting' : 'You are going';
+    const isCancelled = false;
+    const color = isHost ? 'secondary' : isGoing ? 'warnings' : 'default';
+
     return (
     <Card sx={{borderRadius: 3}}>
         <CardContent>
@@ -22,12 +27,11 @@ export default function ActivityCard({activity}: Props) {
             <Chip label={activity.category} variant="outlined" />
             <Box display='flex' gap={3}>
                 <Button 
-                    onClick={() => {}} 
+                    component={Link}
+                    to={`/activities/${activity.id}`} 
                     size="medium" 
                     variant="contained">View</Button>
                 <Button 
-                    onClick={() => deleteActivity.mutate(activity.id)} 
-                    disabled={deleteActivity.isPending}
                     size="medium" 
                     color="error"
                     variant="contained">Delete</Button>
