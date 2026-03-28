@@ -1,18 +1,20 @@
 import { CssBaseline, Container, Box } from "@mui/material";
 import NavBar from "./NavBar";
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
+import HomePage from "../../features/home/HomePage";
 
 function App() {
+  const location = useLocation();
   // const [activities, setActivities] = useState<Activity[]>([]);    // Native react state management if not using React Query
   // const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>(undefined);
   // const [editMode, setEditMode] = useState(false);
 
-// Activity object needed in ActivityDashboard.tsx
-// Could move creation of "activities" bject to that file,
-// but new activities are created through button on NavBar
-// We want those activities to be accessible for display immediately
-// Must be accessible at a high enough level (above NavBar)
-// For short-term, activity creation logic stays here
+  // Activity object needed in ActivityDashboard.tsx
+  // Could move creation of "activities" bject to that file,
+  // but new activities are created through button on NavBar
+  // We want those activities to be accessible for display immediately
+  // Must be accessible at a high enough level (above NavBar)
+  // For short-term, activity creation logic stays here
 
   // // When including a function inside another function, Udemy author
   // // recommends making internal function an arrow function.
@@ -33,40 +35,47 @@ function App() {
   //   setEditMode(true);
   // }
 
-//// When adding router, remove all these handle functions, router will take be responsible for these 
-// const handleFormClose = () => {
-//   setEditMode(false);
-// }
+  //// When adding router, remove all these handle functions, router will take be responsible for these
+  // const handleFormClose = () => {
+  //   setEditMode(false);
+  // }
 
-// const handleSubmitForm = (activity: Activity) => {
-//   // if (activity.id) {
-//   //   setActivities(activities.map(x => x.id === activity.id ? activity : x))
-//   // } else {
-//   //   const newActivity = {...activity, id: activities.length.toString()}
-//   //   setSelectedActivity(newActivity);
-//   //   setActivities([...activities, newActivity]) // The three-dot notation put everything in the attached object into an array
-//   // }
-//   // Placeholder during dev
-//   console.log(activity);
-//   setEditMode(false);
-// }
+  // const handleSubmitForm = (activity: Activity) => {
+  //   // if (activity.id) {
+  //   //   setActivities(activities.map(x => x.id === activity.id ? activity : x))
+  //   // } else {
+  //   //   const newActivity = {...activity, id: activities.length.toString()}
+  //   //   setSelectedActivity(newActivity);
+  //   //   setActivities([...activities, newActivity]) // The three-dot notation put everything in the attached object into an array
+  //   // }
+  //   // Placeholder during dev
+  //   console.log(activity);
+  //   setEditMode(false);
+  // }
 
-//const handleDelete = (id: string) => {
-//  //setActivities(activities.filter(x => x.id !== id))
-//  console.log(id);
-//}
+  //const handleDelete = (id: string) => {
+  //  //setActivities(activities.filter(x => x.id !== id))
+  //  console.log(id);
+  //}
 
-// When routing, the <Outlet /> component below 
-// will be replaced by whatever we route to
+  // When routing, the <Outlet /> component below
+  // will be replaced by whatever we route to
+  //
+  // Homepage is separated from Navbar, have to tweak routes
+  // When default URL, show homepage; otherwise, show other components
   return (
-    <Box sx={{bgcolor: '#eeeeee', minHeight: '100vh'}}>
+    <Box sx={{ bgcolor: "#eeeeee", minHeight: "100vh" }}>
       <CssBaseline />
-      <NavBar />
-      <Container maxWidth='xl' sx={{mt: 3}}>
-        <Outlet />
-      </Container>
+      {location.pathname === '/' ? <HomePage /> : (
+        <>
+          <NavBar />
+          <Container maxWidth="xl" sx={{ mt: 3 }}>
+            <Outlet />
+          </Container>
+        </>
+      )}
     </Box>
   )
 }
 
-export default App
+export default App;

@@ -1,0 +1,4 @@
+.react-calendar {
+    width: 100% !important; /* !important tag necessary because React stylings likely applied at a lower level than styles.css file */
+    border: none !important;
+}

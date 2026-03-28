@@ -1,5 +1,6 @@
 import { Grid } from "@mui/material";
 import ActivityList from "./ActivityList";
+import ActivityFilters from "./ActivityFilters";
 
 //// All prop drilling removed from components when using React Router
 
@@ -44,15 +45,15 @@ export default function ActivityDashboard() {
   
   return (
     <Grid container spacing={3}>
-        <Grid size={7}>
+        <Grid size={8}>
             <ActivityList 
               //activities={activities}
               //selectActivity={selectActivity}
               //deleteActivity={deleteActivity}
             />
         </Grid>
-        <Grid size={5}>
-          Activity filters will go here
+        <Grid size={4}>
+          <ActivityFilters />
         </Grid>
     </Grid>
   )
