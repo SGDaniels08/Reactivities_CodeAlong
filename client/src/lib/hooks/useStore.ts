@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { StoreContext } from "../storese/stores";
+import { StoreContext } from "../stores/store";
 
 // This hook will enable us to use our mobx stores for tracking data client-side
 export function useStore() {
