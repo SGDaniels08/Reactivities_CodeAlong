@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Typography } from '@mui/material';
+import { Box, Button, ButtonGroup, List, ListItemText, Paper, Typography } from '@mui/material';
 import { useStore } from '../../lib/hooks/useStore';
 import { observer } from "mobx-react-lite";
 
@@ -7,18 +7,31 @@ const Counter = observer(function Counter() {
 
     // Anything inside the <Observer> tags will be able to view our mobx state
     return (
-        <>
-            <Typography variant='h4' gutterBottom>{counterStore.title}</Typography>
-            <Typography variant='h6'>The count is: {counterStore.count}</Typography>
+        <Box display='flex' justifyContent='space-between'>
+            <Box sx={{width: '60%'}}>
+                <Typography variant='h4' gutterBottom>{counterStore.title}</Typography>
+                <Typography variant='h6'>The count is: {counterStore.count}</Typography>
 
-            <ButtonGroup sx={{mt: 3}}>
-                <Button onClick={() => counterStore.decrement()} variant="contained" color="error">Decrement</Button>
-                <Button onClick={() => counterStore.increment()} variant="contained" color="success">Increment</Button>
-                <Button onClick={() => counterStore.increment(5)} variant="contained" color="primary">Increment by 5</Button>
-            </ButtonGroup>
-        </>
+                <ButtonGroup sx={{mt: 3}}>
+                    <Button onClick={() => counterStore.decrement()} variant="contained" color="error">Decrement</Button>
+                    <Button onClick={() => counterStore.increment()} variant="contained" color="success">Increment</Button>
+                    <Button onClick={() => counterStore.increment(5)} variant="contained" color="primary">Increment by 5</Button>
+                </ButtonGroup>
+            </Box>
+            <Paper sx={{ width: '40%', p: 4 }}>
+                <Typography variant="h5">Counter events ({})</Typography>
+                <List>
+                    {counterStore.events.map((event, index) => (
+                        <ListItemText key={index}>{event}</ListItemText>
+                    ))}
+                </List>
+            </Paper>
+        </Box>
     )
 });
+
+// In the JSX, the the "Counter events" section loops through everything in the "events" object stored in counterStore.tsx
+// and displays it according to the arrow function
 
 export default Counter
 

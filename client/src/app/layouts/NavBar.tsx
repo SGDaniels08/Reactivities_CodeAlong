@@ -3,12 +3,15 @@ import {
   AppBar,
   Box,
   Container,
+  LinearProgress,
   MenuItem,
   Toolbar,
   Typography,
 } from "@mui/material";
 import { NavLink } from "react-router";
 import MenuItemLink from "../shared/components/MenuItemLink";
+import { useStore } from "../../lib/hooks/useStore";
+import { Observer } from "mobx-react-lite";
 
 // type Props = {
 //   openForm: () => void;
@@ -17,9 +20,15 @@ import MenuItemLink from "../shared/components/MenuItemLink";
 //// Remove all prop drilling when using react router
 //export default function NavBar({openForm}: Props) {
 export default function NavBar() {
+  const {uiStore} = useStore();
+  
   // Note, in <MenuBar> below, the Router requires the "component" property
   // And Typescript requires a "to" property to be set, which will be the
-  // actual endpoint (for homepage, to='/' ; for activity list, to='/activities' )
+  // actual endpoint (for homepage, to='/' ; for activity l ist, to='/activities' )
+  //
+  // Note the <AppBar> has a "static" position; 
+  // this is because the loading bar (<Observer> -> <LinearProgress>)
+  // is "relative", and needs a "static" from which to determine its position
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -27,6 +36,7 @@ export default function NavBar() {
         sx={{
           backgroundImage:
             "linear-gradient(135deg, #182a73 0%, #218aae 69%, #20a7ac 89%)",
+          position: 'relative'
         }}
       >
         <Container maxWidth="xl">
@@ -70,6 +80,24 @@ export default function NavBar() {
             <MenuItem>User Menu</MenuItem>
           </Toolbar>
         </Container>
+        {/* The following <Observer> component
+        
+        */}
+        <Observer>
+          {() => uiStore.isLoading ? (
+            <LinearProgress 
+              color='secondary'
+              sx={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: 4
+              }}
+            />
+          ) : null}
+        </Observer>
+
       </AppBar>
     </Box>
   );

@@ -4,6 +4,10 @@ import { action, makeAutoObservable, makeObservable, observable } from 'mobx';  
 export default class CounterStore {
     title = 'Counter store';
     count = 42;
+    // object below uses mobx computed properties: it takes each new count and stores it in a string array for display and reference
+    events: string[] = [
+        `Initial count is ${this.count}`
+    ]
 
     // makeObservable if you want to have fine-grain control over mobx properties
     // 
@@ -25,9 +29,16 @@ export default class CounterStore {
     // Inside a class, if we don't use an arrow function like below, we'll have to make sure the method is bound to the class
     increment = (amount = 1) => {
         this.count += amount;
+        this.events.push(`Incremented by ${amount} - count is now ${this.count}`)       // mobx computed property
     }
 
     decrement = (amount = 1) => {
         this.count -= amount;
+        this.events.push(`Decremented by ${amount} - count is now ${this.count}`)       // mobx computed property
+    }
+
+    // Function using mobx computer properties; "get" keyword necessary here
+    get eventCount() {
+        return this.events.length;
     }
 }
