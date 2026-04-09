@@ -1,9 +1,11 @@
 //import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import agent from "../api/agent";
+import { useLocation } from "react-router";
 
 export const useActivities = (id?: string) => {
   const queryClient = useQueryClient();
+const location = useLocation();
 
   const {data: activities, isPending} = useQuery({    // Many other states: isLoading, isError, isFetching, etc.
     queryKey: ['activities'],
@@ -11,7 +13,17 @@ export const useActivities = (id?: string) => {
       //const response = await axios.get<Activity[]>('https://localhost:5001/api/activities');
       const response = await agent.get<Activity[]>('/activities');
       return response.data;
-    }
+    },
+    // This following says tha this hook will only trigger
+    // if we are not passing it an Id (no need to get all data
+    // if we're only looking at one thing), and only if we are
+    // going to the 'Create Activity' route 
+    enabled: !id && location.pathname === '/activities'
+    // Add the following "staleTime" option
+    // to set how long an API call will remain "fresh" for
+    // (how long until another network request will be made)
+    //
+    // ,staleTime: 1000 * 60 * 5
   });
 
   const {data: activity, isLoading: isLoadingActivity} = useQuery({
