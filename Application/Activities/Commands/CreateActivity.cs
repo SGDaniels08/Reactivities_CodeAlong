@@ -16,7 +16,7 @@ public class CreateActivity
     }
 
     // IMapper injection is needed for handling DTO, IValidator comes from Fluent Validation for validating DTO
-    public class Handler(AppDbContext context, IMapper mapper, IValidator<Command> validator) : IRequestHandler<Command, string>
+    public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Command, string>
     {
         public async Task<string> Handle(Command request, CancellationToken cancellationToken)
         {
