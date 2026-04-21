@@ -1,3 +1,4 @@
+using API.Middleware;
 using Application.Activities.Queries;
 using Application.Activities.Validators;
 using Application.Core;
@@ -24,12 +25,14 @@ builder.Services.AddMediatR(x => {
 builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);           // Have to use AutoMapper v13, otherwise adds new parameters and cost
                                                                             // will continue mapping any new MappingProfiles we add
 builder.Services.AddValidatorsFromAssemblyContaining<CreateActivityValidator>();
-
+builder.Services.AddTransient<ExceptionMiddleware>();       // Note: Transient services are only instantiated when needed,
+                                                            // Cf. Automapper, which is scoped to the HTTP request
 
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseMiddleware<ExceptionMiddleware>();    // Exception middleware has to go at the top
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod()
 .WithOrigins("http://localhost:3000", "https://localhost:3000"));
 

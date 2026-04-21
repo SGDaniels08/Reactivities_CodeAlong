@@ -22,7 +22,6 @@
     <Folder Include="Activities\DTO\" />
     <Folder Include="Activities\Queries\" />
     <Folder Include="Activities\Validators\" />
-    <Folder Include="Core\" />
   </ItemGroup>
 
 </Project>

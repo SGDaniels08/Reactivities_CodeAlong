@@ -18,12 +18,22 @@ public class ActivitiesController : BaseApiController
     public async Task<ActionResult<List<Activity>>> GetActivities()
     {
         return await Mediator.Send(new GetActivityList.Query());
+
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Activity>> GetActivityDetail(string id)
     {
         return await Mediator.Send(new GetActivityDetails.Query{Id = id});
+
+        // For exception handling, have to account for all exception types
+        // Could just use the following here:
+        //
+        // if (activity == null) return NotFound();
+        //
+        // This will give us the correct HTTP response, but gives too much responsibility to API controller
+        // Better job for application layer, send API layer a special object indicating success or failure
+        // See "Reactivities/Application/Activities/Queries/GetActivityDetails.cs"
     }
 
     [HttpPost]
