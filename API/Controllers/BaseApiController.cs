@@ -1,3 +1,4 @@
+using Application.Core;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,5 +13,18 @@ namespace API.Controllers
         protected IMediator Mediator => 
             _mediator ??= HttpContext.RequestServices.GetService<IMediator>()
                 ?? throw new InvalidOperationException("IMediator service is unavailable");
+
+        protected ActionResult<T> HandleResult<T>(Result<T> result)
+        {
+            if (!result.IsSuccess && result.Code == 404) return NotFound();
+
+
+            if (result.IsSuccess && result.Value != null) return result.Value;
+            // Typed functions are tricky, to return an untyped ActionResult here, you could use:
+            //
+            // return Ok(result.Value);
+            
+            return BadRequest(result.Error);
+        }
     }
 }
