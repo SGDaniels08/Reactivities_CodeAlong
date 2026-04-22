@@ -14,15 +14,16 @@ namespace API.Controllers
             _mediator ??= HttpContext.RequestServices.GetService<IMediator>()
                 ?? throw new InvalidOperationException("IMediator service is unavailable");
 
-        protected ActionResult<T> HandleResult<T>(Result<T> result)
+        protected ActionResult HandleResult<T>(Result<T> result)
         {
             if (!result.IsSuccess && result.Code == 404) return NotFound();
 
-
-            if (result.IsSuccess && result.Value != null) return result.Value;
-            // Typed functions are tricky, to return an untyped ActionResult here, you could use:
+            // Typed functions are tricky, to return an typed ActionResult<T> here, you could use:
             //
-            // return Ok(result.Value);
+            // if (result.IsSuccess && result.Value != null) return result.Value;
+            // For untyped ActionResult:
+        
+            if (result.IsSuccess && result.Value != null) return Ok(result.Value);
             
             return BadRequest(result.Error);
         }

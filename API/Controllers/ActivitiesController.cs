@@ -18,12 +18,13 @@ public class ActivitiesController : BaseApiController
     public async Task<ActionResult<List<Activity>>> GetActivities()
     {
         return await Mediator.Send(new GetActivityList.Query());
-
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Activity>> GetActivityDetail(string id)
     {
+
+        throw new Exception("Server test error");
         // Commented out for exception handling
         // return await Mediator.Send(new GetActivityDetails.Query{Id = id});
 
@@ -56,20 +57,18 @@ public class ActivitiesController : BaseApiController
     public async Task<ActionResult<string>> CreateActivity(CreateActivityDto activityDto)
     {
         //return await Mediator.Send(new CreateActivity.Command{Activity = activity});
-        return await Mediator.Send(new CreateActivity.Command{ActivityDto = activityDto});
+        return HandleResult(await Mediator.Send(new CreateActivity.Command{ActivityDto = activityDto}));
     }
 
     [HttpPut]
-    public async Task<ActionResult> EditActivity(Activity activity)
+    public async Task<ActionResult> EditActivity(EditActivityDto activity)
     {
-        await Mediator.Send(new EditActivity.Command{Activity = activity});
-        return NoContent();
+        return HandleResult(await Mediator.Send(new EditActivity.Command{ActivityDto = activity}));
     }
 
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteActivity(string id)
     {
-        await Mediator.Send(new DeleteActivity.Command{Id = id});
-        return Ok();
+        return HandleResult(await Mediator.Send(new DeleteActivity.Command{Id = id}));
     }
 }
