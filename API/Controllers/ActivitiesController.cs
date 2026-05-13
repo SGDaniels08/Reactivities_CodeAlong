@@ -23,8 +23,6 @@ public class ActivitiesController : BaseApiController
     [HttpGet("{id}")]
     public async Task<ActionResult<Activity>> GetActivityDetail(string id)
     {
-
-        throw new Exception("Server test error");
         // Commented out for exception handling
         // return await Mediator.Send(new GetActivityDetails.Query{Id = id});
 
