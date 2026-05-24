@@ -6,6 +6,7 @@ import ActivityForm from "../../features/activities/form/ActivityForm";
 import ActivityDetailPage from "../../features/activities/details/ActivityDetailPage";
 import Counter from "../../features/counter/Counter";
 import TestErrors from "../../features/errors/TestErrors";
+import NotFound from "../../features/errors/NotFound";
 
 // Routes are provided as an array, and each route will be a Route object
 export const router = createBrowserRouter([
@@ -19,7 +20,8 @@ export const router = createBrowserRouter([
             { path: 'createActivity', element: <ActivityForm key='create' />},      // By giving a "key" to a component, React will be able to distinguish
             { path: 'manage/:id', element: <ActivityForm />},                       // between different instances of same component. Here, it will ensure that
             { path: 'counter', element: <Counter /> },                              // the <ActivityForm> for "Create Activity" will always be seen as different from
-            { path: 'errors', element: <TestErrors />}                              // <ActivityForm> for "Edit Activity", ensure "Create" form is blank
+            { path: 'errors', element: <TestErrors />},                             // <ActivityForm> for "Edit Activity", ensure "Create" form is blank
+            { path: 'not-found', element: <NotFound />}
         ]                                                                                                         
     }                                                                               
 ])
