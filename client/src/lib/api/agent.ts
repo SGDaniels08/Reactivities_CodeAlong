@@ -52,16 +52,29 @@ agent.interceptors.response.use(
         //console.log("axios error: " + error);   
         // rethrow error for React Query to handle (?)
         
-        // Destructure error on the status
+        // Destructure error on whatever info
+        // you need from the error response
         // "error" is object of type any, since
         // compiler doesn't know what type of
         // error you'll be working with
 
-        const {status} = error.response;
+        const {status, data} = error.response;
 
         switch (status) {
             case 400:
-                toast.error('Bad request');
+                //toast.error('Bad request');
+                if (data.errors) {
+                    const modalStateErrors = [];                        // Modal state errors is how errors are handled server-side
+                    for (const key in data.errors) {                    // Every time a validation error occurs, something happens in
+                        if (data.errors[key]) {                         // the system modal state errors object, and that's what ultimately
+                            modalStateErrors.push(data.errors[key]);    // gets returned
+                        }
+                    }
+
+                    throw modalStateErrors.flat();  // Should return an array with all the errors triggered in the for loop
+                } else {
+                    toast.error(data);
+                }
                 break;
             case 401:
                 toast.error('Unauthorized');
@@ -71,7 +84,10 @@ agent.interceptors.response.use(
                 router.navigate('/not-found');
                 break;
             case 500:
-                toast.error('Server error');
+                //toast.error('Server error');
+                // Want to pass details of server error to our <ServerError> component through the router
+                // Use second parameter of navigate() method
+                router.navigate('/server-error', {state: {error: data}});           // "error" is set to the "data" from the error response
                 break;
             default :
                 break;

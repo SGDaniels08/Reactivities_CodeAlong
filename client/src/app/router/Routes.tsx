@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import App from "../layouts/App";
 import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
 import HomePage from "../../features/home/HomePage";
@@ -7,6 +7,7 @@ import ActivityDetailPage from "../../features/activities/details/ActivityDetail
 import Counter from "../../features/counter/Counter";
 import TestErrors from "../../features/errors/TestErrors";
 import NotFound from "../../features/errors/NotFound";
+import ServerError from "../../features/errors/ServerError";
 
 // Routes are provided as an array, and each route will be a Route object
 export const router = createBrowserRouter([
@@ -21,7 +22,9 @@ export const router = createBrowserRouter([
             { path: 'manage/:id', element: <ActivityForm />},                       // between different instances of same component. Here, it will ensure that
             { path: 'counter', element: <Counter /> },                              // the <ActivityForm> for "Create Activity" will always be seen as different from
             { path: 'errors', element: <TestErrors />},                             // <ActivityForm> for "Edit Activity", ensure "Create" form is blank
-            { path: 'not-found', element: <NotFound />}
+            { path: 'not-found', element: <NotFound />},
+            { path: 'server-error', element: <ServerError />},
+            { path: '*', element: <Navigate replace to='/not-found' />}             // Wildcard; if none of the above, sent to Not Found 
         ]                                                                                                         
     }                                                                               
 ])
