@@ -4,7 +4,8 @@ import { Link } from "react-router";
 
 export default function HomePage() {
   return (
-    <Paper sx={{
+    <Paper className="home"
+    sx={{
       color: 'white',
       display: 'flex',
       flexDirection: 'column',
@@ -25,7 +26,7 @@ export default function HomePage() {
       }}
       >
         <Group sx={{ height: 110, width: 110 }} />
-        <Typography variant="h1">
+        <Typography variant="h1" fontWeight='bold'>
           Reactivities
         </Typography>
       </Box>

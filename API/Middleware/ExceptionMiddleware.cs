@@ -38,7 +38,7 @@ public class ExceptionMiddleware (ILogger<ExceptionMiddleware> logger, IHostEnvi
     
         var json = JsonSerializer.Serialize(response, options);
 
-        await context.Response.WriteAsJsonAsync(json);
+        await context.Response.WriteAsync(json);
     }
 
     private static async Task HandleValidationException(HttpContext context, ValidationException ex)

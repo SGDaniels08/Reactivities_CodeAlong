@@ -58,7 +58,7 @@ agent.interceptors.response.use(
         // compiler doesn't know what type of
         // error you'll be working with
 
-        const {status, data} = error.response;
+        const {data, status} = error.response;
 
         switch (status) {
             case 400:
@@ -97,4 +97,4 @@ agent.interceptors.response.use(
     }
 );
 
-export default agent
+export default agent;
