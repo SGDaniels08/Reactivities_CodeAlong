@@ -1,0 +1,16 @@
+import { z } from "zod";
+
+// Create function to handle all string validations
+const requiredString = (fieldName: string) => z.string()
+                                               .min(1, {error: `${fieldName} is required`})
+
+export const activitySchema = z.object({
+    title: requiredString('Title'),
+    description: requiredString('Description'),
+    category: requiredString('Category'),
+    date: requiredString('Date'),
+    city: requiredString('City'),
+    venue: requiredString('Venue')
+})
+
+export type ActivitySchema = z.infer<typeof activitySchema>;
