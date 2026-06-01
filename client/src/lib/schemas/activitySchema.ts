@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 // Create function to handle all string validations
-const requiredString = (fieldName: string) => z.string()
+const requiredString = (fieldName: string) => z.string({error: `${fieldName} is required`})
                                                .min(1, {error: `${fieldName} is required`})
 
 export const activitySchema = z.object({

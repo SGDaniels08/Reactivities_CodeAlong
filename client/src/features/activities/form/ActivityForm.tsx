@@ -1,11 +1,14 @@
-import { Box, Button, Paper, TextField, Typography } from "@mui/material";
+import { Box, Button, Paper, Typography } from "@mui/material";
 //import type { SyntheticEvent } from "react";
 import { useActivities } from "../../../lib/hooks/useActivities";
 import { useParams } from "react-router";
-import { useForm, type FieldValues } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { activitySchema, type ActivitySchema } from "../../../lib/schemas/activitySchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import TextInput from "../../../app/shared/components/TextInput";
+import SelectInput from "../../../app/shared/components/SelectInput";
+import { categoryOptions } from "./categoryOptions";
 
 // type Props = {
 //     activity?: Activity
@@ -14,7 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 // }
 
 export default function ActivityForm() {
-    const { register, reset, handleSubmit, formState: {errors} } = useForm<ActivitySchema>({
+    const { control, reset, handleSubmit } = useForm<ActivitySchema>({
         mode: 'onTouched',        // OnSubmit is default; OnTouched will trigger validation when clicking out of form input box
         resolver: zodResolver(activitySchema)
     });
@@ -60,14 +63,20 @@ export default function ActivityForm() {
             {activity ? 'Edit activity' : 'Create Activity'}
         </Typography>
         <Box component='form' onSubmit={handleSubmit(onSubmit)} display='flex' flexDirection='column' gap={3}>
-            <TextField 
+            {/* <TextField 
                 {...register('title')} 
                 label='Title' 
                 defaultValue={activity?.title} 
                 error={!!errors.title}
                 helperText={errors.title?.message}
-            />
-            <TextField {...register('description')} label='Description' defaultValue={activity?.description} multiline rows={3} />
+            /> */}
+            <TextInput label="Title" control={control} name="title" />
+            <TextInput label="Description" control={control} name="description" multiline rows={3} />
+            <SelectInput items={categoryOptions} label="Category" control={control} name="category" />
+            <TextInput label="Date" control={control} name="date" />    {/* Could set type="datetime-local", but inconsistent experience across browsers */}
+            <TextInput label="City" control={control} name="city" />
+            <TextInput label="Venue" control={control} name="venue" />
+            {/* <TextField {...register('description')} label='Description' defaultValue={activity?.description} multiline rows={3} />
             <TextField {...register('category')} label='Category' defaultValue={activity?.category} />
             <TextField {...register('date')} label='Date' type='date'
                 defaultValue={activity?.date                                //
@@ -76,7 +85,7 @@ export default function ActivityForm() {
                 } 
             />
             <TextField {...register('city')} label='City' defaultValue={activity?.city} />
-            <TextField {...register('venue')} label='Venue' defaultValue={activity?.venue} />
+            <TextField {...register('venue')} label='Venue' defaultValue={activity?.venue} /> */}
             <Box display='flex' justifyContent='end' gap={3}>
                 <Button onClick={() => {}} color='inherit'>Cancel</Button>
                 <Button 
