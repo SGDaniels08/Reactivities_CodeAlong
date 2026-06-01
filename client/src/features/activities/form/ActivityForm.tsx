@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import TextInput from "../../../app/shared/components/TextInput";
 import SelectInput from "../../../app/shared/components/SelectInput";
 import { categoryOptions } from "./categoryOptions";
+import DateTimeInput from "../../../app/shared/components/DateTimeInputs";
 
 // type Props = {
 //     activity?: Activity
@@ -73,7 +74,8 @@ export default function ActivityForm() {
             <TextInput label="Title" control={control} name="title" />
             <TextInput label="Description" control={control} name="description" multiline rows={3} />
             <SelectInput items={categoryOptions} label="Category" control={control} name="category" />
-            <TextInput label="Date" control={control} name="date" />    {/* Could set type="datetime-local", but inconsistent experience across browsers */}
+            <DateTimeInput label="Date" control={control} name="date" />
+            {/*<TextInput label="Date" control={control} name="date" />    (could set type="datetime-local", but inconsistent experience across browsers) */}
             <TextInput label="City" control={control} name="city" />
             <TextInput label="Venue" control={control} name="venue" />
             {/* <TextField {...register('description')} label='Description' defaultValue={activity?.description} multiline rows={3} />
