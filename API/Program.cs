@@ -4,14 +4,21 @@ using Application.Activities.Validators;
 using Application.Core;
 using Domain;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers(opt =>
+{
+    var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+    opt.Filters.Add(new AuthorizeFilter(policy));
+});
+
 builder.Services.AddDbContext<AppDbContext>(opt =>
     {
         opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -41,7 +48,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 app.UseMiddleware<ExceptionMiddleware>();    // Exception middleware has to go at the top
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod()
-.WithOrigins("http://localhost:3000", "https://localhost:3000"));
+    .AllowCredentials()
+    .WithOrigins("http://localhost:3000", "https://localhost:3000"));
 
 app.UseAuthentication();                // Both are used for Identity system
 app.UseAuthorization();                 // Order is important, must authenticate before someone can be authorized
