@@ -19,7 +19,7 @@ export default function DateTimeInput<T extends FieldValues>(props: Props<T>) {
         // In this case, making it so our DateTime picker will act as text (similar to other errors)
         slotProps={{
             textField: {
-                onBlue: field.onBlur,
+                onBlur: field.onBlur,
                 error: !!fieldState.error,
                 helperText: fieldState.error?.message
             }

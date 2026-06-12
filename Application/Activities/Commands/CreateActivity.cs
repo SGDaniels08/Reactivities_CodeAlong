@@ -32,7 +32,7 @@ public class CreateActivity
             //context.Activities.Add(request.Activity);
             context.Activities.Add(activity);                                       // <-- handled in memory by EF, no need for error checking
 
-            await context.SaveChangesAsync(cancellationToken);
+            //await context.SaveChangesAsync(cancellationToken);
 
             // //return request.Activity.Id;
             //return activity.Id;
