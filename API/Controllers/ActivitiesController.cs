@@ -15,7 +15,6 @@ public class ActivitiesController : BaseApiController
     //     return await Mediator.Send(new GetActivityList.Query(), ct);
     // }
 
-    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<List<Activity>>> GetActivities()
     {

@@ -8,6 +8,7 @@ import Counter from "../../features/counter/Counter";
 import TestErrors from "../../features/errors/TestError";
 import NotFound from "../../features/errors/NotFound";
 import ServerError from "../../features/errors/ServerError";
+import LoginForm from "../../features/loginForm";
 
 // Routes are provided as an array, and each route will be a Route object
 export const router = createBrowserRouter([
@@ -24,6 +25,7 @@ export const router = createBrowserRouter([
             { path: 'errors', element: <TestErrors />},                             // <ActivityForm> for "Edit Activity", ensure "Create" form is blank
             { path: 'not-found', element: <NotFound />},
             { path: 'server-error', element: <ServerError />},
+            { path: 'login', element: <LoginForm />},
             { path: '*', element: <Navigate replace to='/not-found' />}             // Wildcard; if none of the above, sent to Not Found 
         ]                                                                                                         
     }                                                                               
