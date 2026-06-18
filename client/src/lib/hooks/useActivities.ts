@@ -2,12 +2,15 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import agent from "../api/agent";
 import { useLocation } from "react-router";
+import type { Activity } from "../types";
+import { useAccount } from "./useAccount";
 
 export const useActivities = (id?: string) => {
   const queryClient = useQueryClient();
+  const { currentUser } = useAccount();
 const location = useLocation();
 
-  const {data: activities, isPending} = useQuery({    // Many other states: isLoading, isError, isFetching, etc.
+  const {data: activities, isLoading} = useQuery({    // Many other states: isPending, isError, isFetching, etc.
     queryKey: ['activities'],
     queryFn: async () => {
       //const response = await axios.get<Activity[]>('https://localhost:5001/api/activities');
@@ -18,7 +21,7 @@ const location = useLocation();
     // if we are not passing it an Id (no need to get all data
     // if we're only looking at one thing), and only if we are
     // going to the 'Create Activity' route 
-    enabled: !id && location.pathname === '/activities'
+    enabled: !id && location.pathname === '/activities' && !!currentUser    // Cast 'currentUser' into Boolean, only show if logged in
     // Add the following "staleTime" option
     // to set how long an API call will remain "fresh" for
     // (how long until another network request will be made)
@@ -32,7 +35,7 @@ const location = useLocation();
       const response = await agent.get<Activity>(`/activities/${id}`)
       return response.data
     },
-    enabled: !!id // Double-exclamation casts into a boolean; returns true if we have an Id, false if not
+    enabled: !!id && !!currentUser // Double-exclamation casts into a boolean; returns true if we have an Id, false if not
   })
   // useEffect(() => {
   //   axios.get<Activity[]>('https://localhost:5001/api/activities')
@@ -80,7 +83,7 @@ const location = useLocation();
 
   return {
     activities,
-    isPending,
+    isLoading,
     updateActivity,
     createActivity,
     deleteActivity,

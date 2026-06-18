@@ -12,6 +12,8 @@ import { NavLink } from "react-router";
 import MenuItemLink from "../shared/components/MenuItemLink";
 import { useStore } from "../../lib/hooks/useStore";
 import { Observer } from "mobx-react-lite";
+import { useAccount } from "../../lib/hooks/useAccount";
+import UserMenu from "./UserMenu";
 
 // type Props = {
 //   openForm: () => void;
@@ -21,6 +23,7 @@ import { Observer } from "mobx-react-lite";
 //export default function NavBar({openForm}: Props) {
 export default function NavBar() {
   const {uiStore} = useStore();
+  const {currentUser} = useAccount();
   
   // Note, in <MenuBar> below, the Router requires the "component" property
   // And Typescript requires a "to" property to be set, which will be the
@@ -66,11 +69,11 @@ export default function NavBar() {
               >
                 Activities
               </MenuItemLink>
-              <MenuItemLink
+              {/* <MenuItemLink
                 to="/createActivity"
               >
                 Create Activity
-              </MenuItemLink>
+              </MenuItemLink> */}
               <MenuItemLink
                 to="/counter"
               >
@@ -82,7 +85,16 @@ export default function NavBar() {
                 Errors
               </MenuItemLink>
             </Box>
-            <MenuItem>User Menu</MenuItem>
+            <Box display='flex' alignItems='center'>
+                {currentUser ? (
+                  <UserMenu />
+                ) : (
+                  <>
+                    <MenuItemLink to='/login'>Login</MenuItemLink>
+                    <MenuItemLink to='/register'>Register</MenuItemLink>
+                  </>
+                )}
+            </Box>
           </Toolbar>
         </Container>
         {/* The following <Observer> component

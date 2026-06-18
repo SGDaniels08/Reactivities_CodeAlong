@@ -8,7 +8,8 @@ import Counter from "../../features/counter/Counter";
 import TestErrors from "../../features/errors/TestError";
 import NotFound from "../../features/errors/NotFound";
 import ServerError from "../../features/errors/ServerError";
-import LoginForm from "../../features/loginForm";
+import LoginForm from "../../features/LoginForm";
+import RequireAuth from "./RequireAuth";
 
 // Routes are provided as an array, and each route will be a Route object
 export const router = createBrowserRouter([
@@ -16,13 +17,15 @@ export const router = createBrowserRouter([
         path: '/',
         element: <App />,        // This is the root route
         children: [
-            { path: '', element: <HomePage /> },
+            { element: <RequireAuth />, children: [
             { path: 'activities', element: <ActivityDashboard />},
             { path: 'activities/:id', element: <ActivityDetailPage />},
             { path: 'createActivity', element: <ActivityForm key='create' />},      // By giving a "key" to a component, React will be able to distinguish
             { path: 'manage/:id', element: <ActivityForm />},                       // between different instances of same component. Here, it will ensure that
-            { path: 'counter', element: <Counter /> },                              // the <ActivityForm> for "Create Activity" will always be seen as different from
-            { path: 'errors', element: <TestErrors />},                             // <ActivityForm> for "Edit Activity", ensure "Create" form is blank
+            ]},                                                                     // the <ActivityForm> for "Create Activity" will always be seen as different from
+            { path: '', element: <HomePage /> },                                    // <ActivityForm> for "Edit Activity", ensure "Create" form is blank
+            { path: 'counter', element: <Counter /> },                              
+            { path: 'errors', element: <TestErrors />},                             
             { path: 'not-found', element: <NotFound />},
             { path: 'server-error', element: <ServerError />},
             { path: 'login', element: <LoginForm />},

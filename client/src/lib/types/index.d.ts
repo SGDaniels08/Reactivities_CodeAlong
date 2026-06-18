@@ -1,3 +1,4 @@
+import type { string } from "zod"
 import type { StringValidation } from "zod/v3"
 
 type Activity = {
@@ -13,7 +14,7 @@ type Activity = {
     longitude: number
 }
 
-export type LocationIQSuggestion = {
+type LocationIQSuggestion = {
   place_id: string
   osm_id: string
   osm_type: string
@@ -29,7 +30,13 @@ export type LocationIQSuggestion = {
   address: LocationIQAddress
 }
 
-export type LocationIQAddress = {
+type User = {
+  id: string
+  email: string
+  displayName: string
+  imageUrl?: string
+}
+type LocationIQAddress = {
   name: string
   road: string
   city?: string
