@@ -3,6 +3,8 @@ import agent from "../api/agent";
 import type { LoginSchema } from "../schemas/loginSchema";
 import { useNavigate } from "react-router";
 import type { User } from "../types";
+import { toast } from "react-toastify";
+import type { RegisterSchema } from "../schemas/registerSchema";
 
 export const useAccount = () => {
     const queryClient = useQueryClient();
@@ -16,6 +18,16 @@ export const useAccount = () => {
             await queryClient.invalidateQueries({
                 queryKey: ['user']
             });
+        }
+    });
+
+    const registerUser = useMutation({
+        mutationFn: async (creds: RegisterSchema) => {
+            await agent.post('/register', creds);
+        },
+        onSuccess: () => {
+            toast.success('Register successful - you can now log in');
+            navigate('/login');
         }
     });
 
@@ -42,6 +54,7 @@ export const useAccount = () => {
         loginUser,
         currentUser,
         logoutUser,
-        loadingUserInfo
+        loadingUserInfo,
+        registerUser
     }
 }
