@@ -18,4 +18,10 @@ public class Activity
     public required string Venue { get; set; }
     public double Latitude { get; set; }
     public double Longitude { get; set; }
+
+    // navigation properties - will configure many-to-many relationship between this and Activities collection in User.cs
+    // When new EF migration is made, adds join table ActivityUser automatically
+    //public ICollection<User> Attendees { get; set; } = [];
+
+    public ICollection<ActivityAttendee> Attendees { get; set; } = [];
 }
