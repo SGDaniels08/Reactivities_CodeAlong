@@ -2,8 +2,10 @@ using API.Middleware;
 using Application.Activities.Queries;
 using Application.Activities.Validators;
 using Application.Core;
+using Application.Interfaces;
 using Domain;
 using FluentValidation;
+using Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -30,7 +32,7 @@ builder.Services.AddMediatR(x => {
     x.AddOpenBehavior(typeof(ValidationBehavior<,>));
 });
 
-
+builder.Services.AddScoped<IUserAccessor, UserAccessor>(); // Because using HttpContextAccessor, must be scoped to HTTP request itself
 builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);           // Have to use AutoMapper v13, otherwise adds new parameters and cost
                                                                             // will continue mapping any new MappingProfiles we add
 builder.Services.AddValidatorsFromAssemblyContaining<CreateActivityValidator>();

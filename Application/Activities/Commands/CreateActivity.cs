@@ -1,6 +1,7 @@
 using System;
 using Application.Activities.DTO;
 using Application.Core;
+using Application.Interfaces;
 using AutoMapper;
 using Domain;
 using FluentValidation;
@@ -17,10 +18,13 @@ public class CreateActivity
     }
 
     // IMapper injection is needed for handling DTO, IValidator comes from Fluent Validation for validating DTO
-    public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Command, Result<string>>
+    public class Handler(AppDbContext context, IMapper mapper, IUserAccessor userAccessor) 
+        : IRequestHandler<Command, Result<string>>
     {
         public async Task<Result<string>> Handle(Command request, CancellationToken cancellationToken)
         {
+            var user = await userAccessor.GetUserAsync();
+
             // Validation changed to middleware in Program.cs, using ValidationBehavior class
             //await validator.ValidateAndThrowAsync(request, cancellationToken);
 
@@ -32,6 +36,16 @@ public class CreateActivity
             //context.Activities.Add(request.Activity);
             context.Activities.Add(activity);                                       // <-- handled in memory by EF, no need for error checking
 
+            // The person who creates the activity is defaulted as the host
+            var attendee = new ActivityAttendee
+            {
+                ActivityId = activity.Id,
+                UserId = user.Id,
+                IsHost = true
+            };
+
+            activity.Attendees.Add(attendee);
+            
             //await context.SaveChangesAsync(cancellationToken);
 
             // //return request.Activity.Id;
