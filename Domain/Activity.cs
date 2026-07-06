@@ -23,5 +23,6 @@ public class Activity
     // When new EF migration is made, adds join table ActivityUser automatically
     //public ICollection<User> Attendees { get; set; } = [];
 
+    // This list of ActivityAttendee entities causes an infinite loop with EF, replace it with DTO
     public ICollection<ActivityAttendee> Attendees { get; set; } = [];
 }
