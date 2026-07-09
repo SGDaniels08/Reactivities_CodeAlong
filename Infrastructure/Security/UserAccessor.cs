@@ -5,7 +5,7 @@ using Domain;
 using Microsoft.AspNetCore.Http;
 using Persistence;
 
-namespace Infrastructure;
+namespace Infrastructure.Security;
 
 // Because we have an interface, and it has been implemented, we need to add this as a service in Program.cs
 public class UserAccessor(IHttpContextAccessor httpContextAccessor, AppDbContext dbContext) : IUserAccessor
