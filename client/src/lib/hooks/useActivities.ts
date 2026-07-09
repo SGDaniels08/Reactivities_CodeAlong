@@ -21,7 +21,16 @@ const location = useLocation();
     // if we are not passing it an Id (no need to get all data
     // if we're only looking at one thing), and only if we are
     // going to the 'Create Activity' route 
-    enabled: !id && location.pathname === '/activities' && !!currentUser    // Cast 'currentUser' into Boolean, only show if logged in
+    enabled: !id && location.pathname === '/activities' && !!currentUser,    // Cast 'currentUser' into Boolean, only show if logged in
+      select: data => {
+        return data.map(activity => {
+          return {
+            ...activity,
+            isHost: currentUser?.id === activity.hostId,
+            isGoing: activity.attendees.some(x => x.id === currentUser?.id)
+          }
+        })
+      }
     // Add the following "staleTime" option
     // to set how long an API call will remain "fresh" for
     // (how long until another network request will be made)
@@ -35,7 +44,14 @@ const location = useLocation();
       const response = await agent.get<Activity>(`/activities/${id}`)
       return response.data
     },
-    enabled: !!id && !!currentUser // Double-exclamation casts into a boolean; returns true if we have an Id, false if not
+    enabled: !!id && !!currentUser, // Double-exclamation casts into a boolean; returns true if we have an Id, false if not
+      select: data => {
+        return {
+          ...data,
+          isHost: currentUser?.id === data.hostId,
+          isGoing: data.attendees.some(x => x.id === currentUser?.id)
+        }
+      }
   })
   // useEffect(() => {
   //   axios.get<Activity[]>('https://localhost:5001/api/activities')
