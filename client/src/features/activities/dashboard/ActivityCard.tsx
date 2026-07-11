@@ -2,6 +2,8 @@ import { AccessTime, Place } from "@mui/icons-material";
 import { Avatar, Box, Button, Card, CardContent, CardHeader, Chip, Divider, Typography } from "@mui/material"
 import { Link } from "react-router";
 import { formatDate } from "../../../lib/util/util.ts";
+import AvatarPopover from "../../../app/shared/components/AvatarPopover.tsx";
+import type { Activity } from "../../../lib/types/index";
 
 type Props = {
     activity: Activity
@@ -12,7 +14,6 @@ type Props = {
 export default function ActivityCard({activity}: Props) {
     // Placeholders right now, help with building out component
     const label = activity.isHost ? 'You are hosting' : 'You are going';
-    const isCancelled = false;
     const color = activity.isHost ? 'secondary' : activity.isGoing ? 'warning' : 'default';
 
     return (
@@ -44,7 +45,7 @@ export default function ActivityCard({activity}: Props) {
                 }
             />
             <Box display='flex' flexDirection='column' gap={2} mr={2}>
-                {(activity.isHost || activity.isGoing) && <Chip label={label} color={color} sx={{borderRadius: 2}} />}
+                {(activity.isHost || activity.isGoing) && <Chip variant="outlined" label={label} color={color} sx={{borderRadius: 2}} />}
                 {activity.isCancelled && <Chip label='Cancelled' color='error' sx={{ borderRadius: 2}} />}
             </Box>
         </Box>
@@ -73,13 +74,7 @@ export default function ActivityCard({activity}: Props) {
             <Divider />
             <Box display='flex' gap={2} sx={{backgroundColor: 'grey.200', py: 3, pl: 3}}>
                 {activity.attendees.map(att => (
-                    <Avatar
-                        key={att.id}
-                        alt={att.displayName + ' image'}
-                        src={att.imageUrl}
-                        component={Link}
-                        to={`profiles/${att.id}`}
-                    />
+                    <AvatarPopover profile={att} key={att.id} />
                 ))}
             </Box>
             {/* <Typography variant="h5">{activity.title}</Typography>
