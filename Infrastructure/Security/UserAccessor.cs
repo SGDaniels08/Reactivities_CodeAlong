@@ -1,8 +1,10 @@
 using System;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using Application.Interfaces;
 using Domain;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Infrastructure.Security;
@@ -12,8 +14,17 @@ public class UserAccessor(IHttpContextAccessor httpContextAccessor, AppDbContext
 {
     public async Task<User> GetUserAsync()
     {
-        return await dbContext.Users.FindAsync(GetUserId())
-            ?? throw new UnauthorizedAccessException("No user is logged in");
+        return await dbContext.Users.FindAsync(GetUserId())                     // Will not return collection of photos, need another
+            ?? throw new UnauthorizedAccessException("No user is logged in");   // method for deleting photos
+    }
+
+    public async Task<User> GetUserWithPhotosAsync()
+    {
+        var userId = GetUserId();
+        return await dbContext.Users            // Cannot use .Include() with FindAsync(), because it 
+            .Include(x => x.Photos)             // does not work with eager loading                
+            .FirstOrDefaultAsync(x => x.Id == userId)
+                ?? throw new UnauthorizedAccessException("No user is logged in");   
     }
 
     public string GetUserId()

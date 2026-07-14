@@ -34,6 +34,7 @@ builder.Services.AddMediatR(x => {
 });
 
 builder.Services.AddScoped<IUserAccessor, UserAccessor>(); // Because using HttpContextAccessor, must be scoped to HTTP request itself
+builder.Services.AddScoped<IPhotoService, PhotoService>();
 builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);           // Have to use AutoMapper v13, otherwise adds new parameters and cost
                                                                             // will continue mapping any new MappingProfiles we add
 builder.Services.AddValidatorsFromAssemblyContaining<CreateActivityValidator>();
