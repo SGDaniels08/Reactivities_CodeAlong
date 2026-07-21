@@ -24,10 +24,12 @@ const location = useLocation();
     enabled: !id && location.pathname === '/activities' && !!currentUser,    // Cast 'currentUser' into Boolean, only show if logged in
       select: data => {
         return data.map(activity => {
+          const host = activity.attendees.find(x => x.id === activity.hostId);
           return {
             ...activity,
             isHost: currentUser?.id === activity.hostId,
-            isGoing: activity.attendees.some(x => x.id === currentUser?.id)
+            isGoing: activity.attendees.some(x => x.id === currentUser?.id),
+            hostImageUrl: host?.imageUrl
           }
         })
       }
@@ -46,10 +48,12 @@ const location = useLocation();
     },
     enabled: !!id && !!currentUser, // Double-exclamation casts into a boolean; returns true if we have an Id, false if not
       select: data => {
+        const host = data.attendees.find(x => x.id === data.hostId);
         return {
           ...data,
           isHost: currentUser?.id === data.hostId,
-          isGoing: data.attendees.some(x => x.id === currentUser?.id)
+          isGoing: data.attendees.some(x => x.id === currentUser?.id),
+          hostImageUrl: host?.imageUrl
         }
       }
   })
