@@ -16,7 +16,7 @@ export default function ProfileHeader() {
     <Paper elevation={3} sx={{ p: 4, borderRadius: 3 }}>
       <Grid container spacing={2}>
         <Grid size={8}>
-          <Stack directon="row" spacing={3} alignItems="center">
+          <Stack direction="row" spacing={3} alignItems="center">
             <Avatar sx={{ width: 150, height: 150 }} />
             <Box display="flex" flexDirection="column" gap={2}>
               <Typography variant="h4">Display Name</Typography>
