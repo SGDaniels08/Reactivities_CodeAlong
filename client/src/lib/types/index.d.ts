@@ -27,6 +27,11 @@ type Profile = {
   imageUrl?: string
 }
 
+type Photo = {
+  id: string
+  url: string
+}
+
 type LocationIQSuggestion = {
   place_id: string
   osm_id: string
