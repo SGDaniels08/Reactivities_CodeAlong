@@ -1,11 +1,18 @@
 import { CloudUpload } from "@mui/icons-material";
 import { Box, Grid, Typography } from "@mui/material";
-import { useCallback } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useDropzone } from 'react-dropzone';
+import Cropper, { type ReactCropperElement } from "react-cropper";
+import "cropperjs/dist/cropper.css";
 
 export default function PhotoUploadWidget() {
+    const [files, setFiles] = useState<object & { preview: string; }[]>([]);
+    const cropperRef = useRef<ReactCropperElement>(null);
+
     const onDrop = useCallback((acceptedFiles: File[]) => {
-        console.log(acceptedFiles)
+        setFiles(acceptedFiles.map(file => Object.assign(file, {
+            preview: URL.createObjectURL(file as Blob)
+        })))
     }, [])
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({onDrop})
@@ -36,9 +43,29 @@ export default function PhotoUploadWidget() {
         </Grid>
         <Grid size={4}>
             <Typography variant="overline" color="secondary">Step 2 - Resize image</Typography>
+            <Cropper
+                src={files[0]?.preview}
+                style={{height: 300, width: '90%'}}
+                initialAspectRatio={1}  // "1" for aspect ratio makes it square
+                aspectRatio={1}
+                preview='.img-preview'      // CSS class property
+                guides={false}
+                viewMode={1}    // constrains crop box inside canvas we're working on
+                background={false}
+            />
+
         </Grid>
         <Grid size={4}>
-            <Typography variant="overline" color="secondary">Step 3 - Preview & upload</Typography>
+            {files[0]?.preview && (
+                <>
+                    <Typography variant="overline" color="secondary">Step 3 - Preview & upload</Typography>
+                    <div 
+                        className="img-preview"
+                        style={{width: 300, height: 300, overflow: 'hidden'}}
+                        
+                    />
+                </>
+            )}
         </Grid>
     </Grid>
   )
