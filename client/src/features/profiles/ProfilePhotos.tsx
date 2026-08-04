@@ -9,19 +9,29 @@ import { useParams } from "react-router";
 import { useProfile } from "../../lib/hooks/useProfile";
 import { useState } from "react";
 import PhotoUploadWidget from "../../app/shared/components/PhotoUploadWidget";
+import StarButton from "../../app/shared/components/StarButton";
+import DeleteButton from "../../app/shared/components/DeleteButton";
 
 export default function ProfilePhotos() {
   const { id } = useParams();
-  const { photos, loadingPhotos, isCurrentUser, uploadPhoto } = useProfile(id);
+  const {
+    photos,
+    loadingPhotos,
+    isCurrentUser,
+    uploadPhoto,
+    profile,
+    setMainPhoto,
+    deletePhoto,
+  } = useProfile(id);
   const [editMode, setEditMode] = useState(false);
 
   const handlePhotoUpload = (file: Blob) => {
     uploadPhoto.mutate(file, {
       onSuccess: () => {
         setEditMode(false);
-      }
-    })
-  } 
+      },
+    });
+  };
 
   if (loadingPhotos) return <Typography>Loading photos...</Typography>;
 
@@ -37,7 +47,7 @@ export default function ProfilePhotos() {
         </Box>
       )}
       {editMode ? (
-        <PhotoUploadWidget 
+        <PhotoUploadWidget
           uploadPhoto={handlePhotoUpload}
           loading={uploadPhoto.isPending}
         />
@@ -57,6 +67,24 @@ export default function ProfilePhotos() {
                 alt={"user profile image"}
                 loading="lazy"
               />
+              {isCurrentUser && (
+                <div>
+                  <Box
+                    sx={{ position: "absolute", top: 0, left: 0 }}
+                    onClick={() => setMainPhoto.mutate(item)}
+                  >
+                    <StarButton selected={item.url === profile?.imageUrl} />
+                  </Box>
+                  {profile?.imageUrl !== item.url && (
+                    <Box
+                      sx={{ position: "absolute", top: 0, right: 0 }}
+                      onClick={() => deletePhoto.mutate(item.id)}
+                    >
+                      <DeleteButton />
+                    </Box>
+                  )}
+                </div>
+              )}
             </ImageListItem>
           ))}
         </ImageList>
