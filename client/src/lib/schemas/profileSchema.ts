@@ -1,9 +1,9 @@
 import { z } from "zod";
 import { requiredString } from "../util/util";
 
-export const editProfile = z.object({
+export const profileSchema = z.object({
     displayName: requiredString('displayName'),
     bio: requiredString('bio')
 })
 
-export type ProfileSchema = z.infer<typeof editProfile>
+export type ProfileSchema = z.infer<typeof profileSchema>
