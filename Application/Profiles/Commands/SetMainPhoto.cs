@@ -3,7 +3,7 @@ using Application.Interfaces;
 using MediatR;
 using Persistence;
 
-namespace Application.Profiles.Comands;
+namespace Application.Profiles.Commands;
 
 public class SetMainPhoto
 {

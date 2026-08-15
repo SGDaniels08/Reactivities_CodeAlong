@@ -1,4 +1,3 @@
-using Application.Profiles.Comands;
 using Application.Profiles.Commands;
 using Application.Profiles.DTOs;
 using Application.Profiles.Queries;
@@ -41,5 +40,12 @@ public class ProfilesController : BaseApiController
     public async Task<ActionResult<UserProfile>> GetProfile(string userId)
     {
         return HandleResult(await Mediator.Send(new GetProfile.Query { UserId = userId }));
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult> EditProfile(string id, UserProfile profile)
+    {
+        profile.Id = id;
+        return HandleResult(await Mediator.Send(new EditProfile.Command{ProfileDto = profile}));
     }
 }

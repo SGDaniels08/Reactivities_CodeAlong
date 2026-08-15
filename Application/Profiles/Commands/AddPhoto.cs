@@ -5,7 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Persistence;
 
-namespace Application.Profiles.Comands;
+namespace Application.Profiles.Commands;
 
 public class AddPhoto
 {

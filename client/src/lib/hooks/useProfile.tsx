@@ -4,8 +4,8 @@ import type { Photo, Profile, User } from "../types";
 import { useMemo } from "react";
 
 export const useProfile = (id?: string) => {
-    const queryClient = useQueryClient();
-    
+  const queryClient = useQueryClient();
+
   const { data: profile, isLoading: loadingProfile } = useQuery<Profile>({
     queryKey: ["profile", id],
     queryFn: async () => {
@@ -18,8 +18,8 @@ export const useProfile = (id?: string) => {
   const { data: photos, isLoading: loadingPhotos } = useQuery<Photo[]>({
     queryKey: ['photos', id],
     queryFn: async () => {
-        const response = await agent.get<Photo[]>(`/profiles/${id}/photos`)
-        return response.data
+      const response = await agent.get<Photo[]>(`/profiles/${id}/photos`)
+      return response.data
     },
     enabled: !!id
   });
@@ -29,9 +29,9 @@ export const useProfile = (id?: string) => {
       const formData = new FormData();
       formData.append('file', file);
       const response = await agent.post('/profiles/add-photo', formData, {
-        headers: {'Content-Type': 'multipart/form-data'}
+        headers: { 'Content-Type': 'multipart/form-data' }
       });
-      
+
       return response.data;
     },
     onSuccess: async (photo: Photo) => {
@@ -71,14 +71,14 @@ export const useProfile = (id?: string) => {
         if (!profile) return profile;
         return {
           ...profile,
-          imageUrl: photo.url          
+          imageUrl: photo.url
         }
       })
     }
   })
 
   const deletePhoto = useMutation({
-    mutationFn: async(photoId: string) => {
+    mutationFn: async (photoId: string) => {
       await agent.delete(`/profiles/${photoId}/photos`)
     },
     onSuccess: (_, photoId) => {

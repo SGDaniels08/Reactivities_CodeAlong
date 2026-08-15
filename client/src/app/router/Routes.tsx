@@ -12,6 +12,7 @@ import RequireAuth from "./RequireAuth";
 import RegisterForm from "../../features/account/RegisterForm";
 import LoginForm from "../../features/account/LoginForm";
 import ProfilePage from "../../features/profiles/ProfilePage";
+import EditProfile from "../../features/profiles/form/EditProfile";
 
 // Routes are provided as an array, and each route will be a Route object
 export const router = createBrowserRouter([
@@ -27,7 +28,8 @@ export const router = createBrowserRouter([
           { path: "createActivity", element: <ActivityForm key="create" /> },       // By giving a "key" to a component, React will be able to distinguish
           { path: "manage/:id", element: <ActivityForm /> },                        // between different instances of same component. Here, it will ensure that
           { path: "profiles/:id", element: <ProfilePage /> },                       // the <ActivityForm> for "Create Activity" will always be seen as different from
-        ],                                                                          // <ActivityForm> for "Edit Activity", ensure "Create" form is blank
+          { path: "editProfile/:id", element: <EditProfile />}                      // <ActivityForm> for "Edit Activity", ensure "Create" form is blank
+        ],                                                                          
       }, 
       { path: "", element: <HomePage /> }, 
       { path: "counter", element: <Counter /> },
