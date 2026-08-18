@@ -13,11 +13,12 @@ export const useProfile = (id?: string) => {
       return response.data;
     },
     enabled: !!id,
+    select: data => {return data}
   });
 
   const editProfile = useMutation({
     mutationFn: async (profile: Profile) => {
-      await agent.put('/editProfile', profile)
+      await agent.put(`/editProfile/${id}`, profile)
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({

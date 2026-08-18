@@ -44,7 +44,7 @@ const onSubmit = async (data: LoginSchema) => {
             color='secondary.main'
         >
             <LockOpen fontSize='large' />
-            <Typography variant='h4'>SIgn in</Typography>            
+            <Typography variant='h4'>Sign in</Typography>            
         </Box>
         <TextInput label='Email' control={control} name='email' />
         <TextInput label='Password' control={control} name='password' type='password' />

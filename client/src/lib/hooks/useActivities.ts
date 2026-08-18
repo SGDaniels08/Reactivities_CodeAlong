@@ -8,9 +8,9 @@ import { useAccount } from "./useAccount";
 export const useActivities = (id?: string) => {
   const queryClient = useQueryClient();
   const { currentUser } = useAccount();
-const location = useLocation();
+  const location = useLocation();
 
-  const {data: activities, isLoading} = useQuery({    // Many other states: isPending, isError, isFetching, etc.
+  const { data: activities, isLoading } = useQuery({    // Many other states: isPending, isError, isFetching, etc.
     queryKey: ['activities'],
     queryFn: async () => {
       //const response = await axios.get<Activity[]>('https://localhost:5001/api/activities');
@@ -22,17 +22,17 @@ const location = useLocation();
     // if we're only looking at one thing), and only if we are
     // going to the 'Create Activity' route 
     enabled: !id && location.pathname === '/activities' && !!currentUser,    // Cast 'currentUser' into Boolean, only show if logged in
-      select: data => {
-        return data.map(activity => {
-          const host = activity.attendees.find(x => x.id === activity.hostId);
-          return {
-            ...activity,
-            isHost: currentUser?.id === activity.hostId,
-            isGoing: activity.attendees.some(x => x.id === currentUser?.id),
-            hostImageUrl: host?.imageUrl
-          }
-        })
-      }
+    select: data => {
+      return data.map(activity => {
+        const host = activity.attendees.find(x => x.id === activity.hostId);
+        return {
+          ...activity,
+          isHost: currentUser?.id === activity.hostId,
+          isGoing: activity.attendees.some(x => x.id === currentUser?.id),
+          hostImageUrl: host?.imageUrl
+        }
+      })
+    }
     // Add the following "staleTime" option
     // to set how long an API call will remain "fresh" for
     // (how long until another network request will be made)
@@ -40,22 +40,22 @@ const location = useLocation();
     // ,staleTime: 1000 * 60 * 5
   });
 
-  const {data: activity, isLoading: isLoadingActivity} = useQuery({
+  const { data: activity, isLoading: isLoadingActivity } = useQuery({
     queryKey: ['activities', id],
     queryFn: async () => {
       const response = await agent.get<Activity>(`/activities/${id}`)
       return response.data
     },
     enabled: !!id && !!currentUser, // Double-exclamation casts into a boolean; returns true if we have an Id, false if not
-      select: data => {
-        const host = data.attendees.find(x => x.id === data.hostId);
-        return {
-          ...data,
-          isHost: currentUser?.id === data.hostId,
-          isGoing: data.attendees.some(x => x.id === currentUser?.id),
-          hostImageUrl: host?.imageUrl
-        }
+    select: data => {
+      const host = data.attendees.find(x => x.id === data.hostId);
+      return {
+        ...data,
+        isHost: currentUser?.id === data.hostId,
+        isGoing: data.attendees.some(x => x.id === currentUser?.id),
+        hostImageUrl: host?.imageUrl
       }
+    }
   })
   // useEffect(() => {
   //   axios.get<Activity[]>('https://localhost:5001/api/activities')
@@ -64,16 +64,16 @@ const location = useLocation();
   //     return () => {}
   // }, [])
   // 
-  // useEffect() also not necessary if using React Query    
+  // useEffect() also n                    nmot necessary if using React Query    
 
   const updateActivity = useMutation({
     mutationFn: async (activity: Activity) => {
       await agent.put('/activities', activity)
     },
     onSuccess: async () => {
-        await queryClient.invalidateQueries({
-          queryKey: ['activities']
-        })
+      await queryClient.invalidateQueries({
+        queryKey: ['activities']
+      })
 
     }
   })
@@ -90,7 +90,7 @@ const location = useLocation();
     }
   })
 
-    const deleteActivity = useMutation({
+  const deleteActivity = useMutation({
     mutationFn: async (id: string) => {
       await agent.delete(`/activities/${id}`)
     },
@@ -108,7 +108,7 @@ const location = useLocation();
     onMutate: async (activityId: string) => {
       // Complex, see lesson 159 for detailed explanation
       // This will effectively make a copy of our state as we tinker with attendance, so we can roll it back if something goes wrong
-      await queryClient.cancelQueries({queryKey: ['activities', activityId]});
+      await queryClient.cancelQueries({ queryKey: ['activities', activityId] });
 
       const prevActivity = queryClient.getQueryData<Activity>(['activities', activityId]);
 
@@ -135,14 +135,14 @@ const location = useLocation();
         }
       });
 
-      return {prevActivity}
+      return { prevActivity }
     },
     onError: (error, activityId, context) => {
       console.log(error);
       if (context?.prevActivity) {
         queryClient.setQueryData(['activities', activityId], context.prevActivity)
       }
-      }
+    }
   })
 
   return {

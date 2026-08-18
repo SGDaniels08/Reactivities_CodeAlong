@@ -103,7 +103,7 @@ export default function ActivityForm() {
                 helperText={errors.title?.message}
             /> */}
             <TextInput label="Title" control={control} name="title" />
-            <TextInput label="Description" control={control} name="description" multiline rows={3} />
+            <TextInput label="Description" control={control} name="description" multiline rows={3}  />
             <Box display="flex" gap={3}>
                 <SelectInput items={categoryOptions} label="Category" control={control} name="category" />
                 <DateTimeInput label="Date" control={control} name="date" />
