@@ -73,7 +73,7 @@ export default function ActivityForm() {
         //     data[key] = value;
         // });
         // // The 'key' value above will be tied to each form element
-        // // Using the 'name' property of the JXS tags below
+        // // Using the 'name' property of the JSX tags below
 
         // if (activity) {
         //     data.id = activity.id

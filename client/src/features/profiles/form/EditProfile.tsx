@@ -17,14 +17,12 @@ export default function EditProfile() {
 
     const onSubmit = async (data: ProfileSchema) => {
         try {
+            console.log('EditProfile onSubmit')
             console.log(data)
             if (profile) {
-                editProfile.mutate({ ...profile, ...data }, {
+                editProfile.mutate({id:profile.id, ...data}, {
                     onSuccess: () => navigate(`/profiles/${profile.id}`),
-                    onFailure: () => {
-                        console.log(profile)
-                    }
-
+                    onError: (e) => console.log(e)
                 })
             }
         } catch (error) {

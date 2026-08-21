@@ -18,12 +18,7 @@ export const useProfile = (id?: string) => {
 
   const editProfile = useMutation({
     mutationFn: async (profile: Profile) => {
-      await agent.put(`/editProfile/${id}`, profile)
-    },
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ['editProfile']
-      })
+      await agent.put(`/profiles/${id}`, profile)
     }
   });
 
